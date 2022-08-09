@@ -26,14 +26,13 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls != None:
-            if cls in model:
-                retob = {}
-                for key, value in self.__objects.items():
-                    classname = (key.split('.'))[0]
-                    if classname == cls:
-                       retob[key] = self.__objects[key]
-                return retob
+        if cls != None and self.__objects:
+            retob = {}
+            for key, value in self.__objects.items():
+                classname = (key.split('.'))[0]
+                if classname == cls.__name__:
+                    retob[key] = self.__objects[key]
+            return retob
         return self.__objects
 
     def new(self, obj):
