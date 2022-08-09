@@ -145,7 +145,10 @@ class HBNBCommand(cmd.Cmd):
                     value[1] = (value[1])[1:-1]
                     value[1] = value[1].replace('\\"', '"')
                     value[1] = value[1].replace('_', ' ')
+                try:
                     setattr(obj, value[0], value[1])
+                except Exception:
+                    pass
         print(obj.id)
         obj.save()
 
