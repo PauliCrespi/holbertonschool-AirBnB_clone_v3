@@ -125,21 +125,29 @@ class HBNBCommand(cmd.Cmd):
             return
         obj = eval("{}()".format(arg[0]))
         for i in param:
-            value = i.split("=")
+            value = i.split('=', 1)
+            """ que corte solo 1 vez por el char = """
             if len(value) > 1:
                 if '"' not in value[1] and '.' not in value[1]:
                     """ si no tiene comillas ni punto es tipo int """
-                    setattr(obj, value[0], int(value[1]))
+                    try:
+                        value[1] = int(value[1])
+                    except Exception:
+                        continue
                 elif '.' in value[1]:
                     """ si tiene punto es tipo float """
-                    setattr(obj, value[0], float(value[1]))
-                elif '"' in value[1]:
-                    """ si tiene comillas es string """
-                    value[1] = value[1].replace('"', '')
+                    try:
+                        value[1] = float(value[1])
+                    except Exception:
+                        continue
+                elif value[1][0] == '"':
+                    """ si empieza con comillas es string """
+                    value[1] = (value[1])[1:-1]
+                    value[1] = value[1].replace('\\"', '"')
                     value[1] = value[1].replace('_', ' ')
                     setattr(obj, value[0], value[1])
+        print(obj.id)
         obj.save()
-        print("{}".format(obj.id))
 
     def help_create(self):
         """ Help information for the create method """
