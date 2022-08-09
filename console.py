@@ -126,8 +126,15 @@ class HBNBCommand(cmd.Cmd):
         obj = eval("{}()".format(arg[0]))
         for i in param:
             value = i.split("=")
-            if len(value) == 1:
-                if type(value[1]) in [str, int, float]:
+            if len(value) > 1:
+                if '"' not in value[1] and '.' not in value[1]:
+                    """ si no tiene comillas ni punto es tipo int """
+                    setattr(obj, value[0], int(value[1]))
+                elif '.' in value[1]:
+                    """ si tiene punto es tipo float """
+                    setattr(obj, value[0], float(value[1]))
+                elif '"' in value[1]:
+                    """ si tiene comillas es string """
                     value[1] = value[1].replace('"', '')
                     value[1] = value[1].replace('_', ' ')
                     setattr(obj, value[0], value[1])
