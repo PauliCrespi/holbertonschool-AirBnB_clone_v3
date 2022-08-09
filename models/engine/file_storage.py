@@ -30,7 +30,8 @@ class FileStorage:
             if cls in model:
                 retob = {}
                 for key, value in self.__objects.items():
-                    if key == cls:
+                    classname = (key.split('.'))[0]
+                    if classname == cls:
                        retob[key] = self.__objects[key]
                 return retob
         return self.__objects
@@ -71,3 +72,10 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        """ delete obj from __objects """
+        if obj is not None:
+            k = obj.__class__.__name__ + "." + obj.id
+            del FileStorage.__objects[k]
+
