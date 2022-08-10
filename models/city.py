@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+""" city file """
+
 from models.base_model import BaseModel, Base
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey
