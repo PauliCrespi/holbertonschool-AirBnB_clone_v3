@@ -1,23 +1,16 @@
 #!/usr/bin/python3
-""" city file """
-
+""" City Module for HBNB project """
 from models.base_model import BaseModel, Base
-from datetime import datetime
-from sqlalchemy import Column, Integer, String, ForeignKey
+import sqlalchemy
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.place import Place
-import os
+from os import getenv
 
 
 class City(BaseModel, Base):
-    """ city class """
-    type_storage = os.getenv("HBNB_TYPE_STORAGE")
-    __tablename__ = "cities"
-    
-    if type_storage == "db":
+    """CITY class that creates cits table """
+    if getenv("HBNB_TYPE_STORAGE") == "db":        
+        __tablename__ = 'cities'
+        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
         name = Column(String(128), nullable=False)
-        state_id = Column(String(60), ForeignKey("states.id"), nullable=False,)
-        places = relationship("Place", cascade="all,delete", backref='cities')
-    else:
-        name = ""
-        state_id = ""
+        places = relationship("Place", cascade="all, delete-orphan", backref="cities")
