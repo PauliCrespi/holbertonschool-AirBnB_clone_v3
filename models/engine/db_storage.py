@@ -3,7 +3,8 @@
 
 
 from models.user import User
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
+from models.base_model import Base
 import json
 from models.state import State
 from models.city import City
@@ -15,7 +16,12 @@ from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 
-class DBStorage:
+model = {"User": User, "State": State,
+         "City": City, "Amenity": Amenity,
+         "Place": Place, "Review": Review}
+
+
+class DBStorage():
     """Database"""
     __engine = None
     __session = None
@@ -33,19 +39,12 @@ class DBStorage:
 
     def all(self, cls=None):
         """all func"""
-        model = {"User": User, "State": State,
-         "City": City, "Amenity": Amenity,
-         "Place": Place, "Review": Review}
-        if cls == None:
-            for i in model:
-                query += self.__session.query(model[i]).all()
-        else:
-            query = self.__session.query(model[cls])
-        dic = {}
-        for elem in query:
-            key = "{}.{}: {}".format(type(elem).__name__, elem.id)
-            dic[key] = elem
-        return dic
+        objs = {}
+        for cclass in model:
+            if model[cclass] == cls or cls is None:
+                for key in self.__session.query(model[cclass]).all():
+                    objs[type(key).__name__+'.'+key.id] = key
+        return objs
 
     def new(self, obj):
         """new"""
@@ -58,13 +57,16 @@ class DBStorage:
     def delete(self, obj=None):
         """delete"""
         if obj == None:
-            self.__session.delete()
-        else:
             self.__session.delete(obj)
+            self.save()
 
     def reload(self):
         """reload"""
         Base.metadata.create_all(self.__engine)
-        self.__session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(self.__session)
+        ssession = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(ssession)
         self.__session = Session
+
+    def close(self):
+        """close"""
+        self.__session.close()
