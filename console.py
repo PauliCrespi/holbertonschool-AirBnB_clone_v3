@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        arg = args.split(" ")
+        arg = shlex.split(args, posix=False)
         param = arg[1:]
         if len(args) == 0:
             print("** class name missing **")
@@ -123,34 +124,34 @@ class HBNBCommand(cmd.Cmd):
         elif arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        obj = eval("{}()".format(arg[0]))
+        new_instance = HBNBCommand.classes[arg[0]]()
         for i in param:
-            value = i.split('=', 1)
+            prekey = i
+            prekey = prekey.split('=')
+            key = str(prekey[0])
+            value = prekey[1]
             """ que corte solo 1 vez por el char = """
             if len(value) > 1:
-                if '"' not in value[1] and '.' not in value[1]:
+                if '"' == value[0] and '"' == value[-1]:
                     """ si no tiene comillas ni punto es tipo int """
                     try:
-                        value[1] = int(value[1])
+                        value = value.replace('"', "")
+                        if '_' in value:
+                            value = value.replace('_', ' ')
                     except Exception:
                         continue
-                elif '.' in value[1]:
+                else:
                     """ si tiene punto es tipo float """
                     try:
-                        value[1] = float(value[1])
+                        value = int(value)
                     except Exception:
-                        continue
-                elif value[1][0] == '"':
-                    """ si empieza con comillas es string """
-                    value[1] = (value[1])[1:-1]
-                    value[1] = value[1].replace('\\"', '"')
-                    value[1] = value[1].replace('_', ' ')
-                try:
-                    setattr(obj, value[0], value[1])
-                except Exception:
-                    pass
-        print(obj.id)
-        obj.save()
+                        try:
+                            value = float(value)
+                        except Exception:
+                            continue
+                setattr(new_instance, key, value)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
