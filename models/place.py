@@ -21,7 +21,7 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
 
 class Place(BaseModel, Base):
     """table Place """
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
+    if getenv('HBNB_TYPE_STORAGE') == "db":
         __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -38,7 +38,7 @@ class Place(BaseModel, Base):
                                     backref="place_amenities",
                                     viewonly=False)
 
-    if getenv('HBNB_TYPE_STORAGE') != 'db':
+    if getenv('HBNB_TYPE_STORAGE') != "db":
         @property
         def reviews(self):
             """getter _"""
