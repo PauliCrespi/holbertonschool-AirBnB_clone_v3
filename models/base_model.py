@@ -5,7 +5,9 @@ from datetime import datetime
 from sqlalchemy import String, Column, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import models
-
+from os import getenv
+import sqlalchemy
+import uuid
 
 if models.storage_t == "db":
     Base = declarative_base()
@@ -15,9 +17,10 @@ else:
 class BaseModel:
     """A base class for all hbnb models"""
 
-    id = Column(String(60), unique=True, nullable=False, primary_key=True)
-    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    if models.storage_t == "db":
+        id = Column(String(60), unique=True, nullable=False, primary_key=True)
+        created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+        updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -37,8 +40,8 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
+                                         self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""

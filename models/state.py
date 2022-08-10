@@ -22,7 +22,7 @@ class State(BaseModel, Base):
         super().__init__(*args, **kwargs)
         
     if (getenv("HBNB_TYPE_STORAGE") != "db"):
-       @property
+        @property
         def cities(self):
             """cities"""
             from models import storage

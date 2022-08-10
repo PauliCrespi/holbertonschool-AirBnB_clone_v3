@@ -50,6 +50,10 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
+    def __init__(self, *args, **kwargs):
+        """initializes Place"""
+        super().__init__(*args, **kwargs)
+
     if models.storage_t != 'db':
         @property
         def reviews(self):
