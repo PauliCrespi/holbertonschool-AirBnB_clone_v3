@@ -18,7 +18,8 @@ def teardown_app(self):
 @app.route("/cities_by_states", strict_slashes=False)
 def cities_list():
     """list cities"""
-    states = storage.all(State)
+    states = storage.all(State).values()
+    states = sorted(statesList, key=lambda k: k.name)
     return render_template("8-cities_by_states.html", states)
 
 
