@@ -11,23 +11,18 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    if (getenv("HBNB_TYPE_STORAGE") == "db"):
-        cities = relationship("City", backref="state", cascade="all, \
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
+        cities = relationship('City', backref="state", cascade="all, \
                               delete-orphan")
-    else:
-        name = ""
 
-    def __init__(self, *args, **kwargs):
-        """init state"""
-        super().__init__(*args, **kwargs)
-        
-    if (getenv("HBNB_TYPE_STORAGE") != "db"):
+    if getenv("HBNB_TYPE_STORAGE") != 'db':
         @property
         def cities(self):
-            """cities"""
+            """list cities"""
             from models import storage
-            stacit = []
-            for stat in storage.all(City).values():
-                if self.id == city.state_id:
-                    stacit.append(storage.all(City)[stat])
-            return stacit
+            listcit = []
+            allcities = storage.all(City).values()
+            for city in allcities:
+                if city.state_id == self.id:
+                    listcit.append(city)
+            return listcit
