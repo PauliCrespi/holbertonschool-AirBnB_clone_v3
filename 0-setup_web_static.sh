@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# task 0!:
+# task 0:
 
 apt-get update
 apt-get -y install nginx
