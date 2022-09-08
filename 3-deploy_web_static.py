@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# task 3
+# task 3:
 
 from datetime import datetime
 from os.path import isdir
