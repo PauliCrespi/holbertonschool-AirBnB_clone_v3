@@ -78,6 +78,21 @@ class FileStorage:
             k = obj.__class__.__name__ + "." + obj.id
             del FileStorage.__objects[k]
 
+    def get(self, cls, id):
+        """get"""
+        if id is None or cls is None:
+            return None
+        try:
+            return self.__session.query(cls).get(id)
+        except:
+            return None
+
+    def count(self, cls=None):
+        """counter"""
+        if cls is None:
+            return len(self.all())
+        return len(self.all(cls))
+
     def close(self):
         """close"""
         self.reload()
