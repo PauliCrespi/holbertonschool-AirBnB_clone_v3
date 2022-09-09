@@ -7,5 +7,5 @@ import json
 
 @app_views.route('/status')
 def status():
-     """stat"""
-     return ({"status": "OK"})
+    """stat"""
+    return ({"status": "OK"})
