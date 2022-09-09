@@ -12,6 +12,7 @@ def status():
     """stat"""
     return ({"status": "OK"})
 
+
 @app_views.route('stats')
 def count():
     """counter"""
