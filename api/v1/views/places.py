@@ -63,6 +63,7 @@ def post_place(city_id):
         abort(404)
     if 'name' not in req:
         abort(400, description="Missing name")
+    req["city_id"] = city_id
     info = Place(**req)
     info.save()
     return make_response(jsonify(info.to_dict()), 201)
