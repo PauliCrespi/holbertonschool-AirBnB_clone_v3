@@ -8,7 +8,7 @@ from flask import jsonify, make_response, request, abort
 from models.user import User
 
 
-@app_views.route('/states/users',
+@app_views.route('/users',
                  methods=['GET'], strict_slashes=False)
 def userslist():
     """list all users"""
