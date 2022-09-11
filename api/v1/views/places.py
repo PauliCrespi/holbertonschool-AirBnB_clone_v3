@@ -49,7 +49,7 @@ def place_del(place_id):
                  methods=['POST'], strict_slashes=False)
 def post_place(city_id):
     """post"""
-    req = request.json
+    req = request.get_json()
     if not req:
         abort(400, description="Not a JSON")
     if 'user_id' not in req:
