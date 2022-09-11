@@ -24,7 +24,7 @@ def all(state_id=None):
         return jsonify(listobj)
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def dell(state_id):
     """delete"""
     if not storage.get(State, state_id):
