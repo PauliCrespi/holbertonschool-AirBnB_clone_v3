@@ -12,7 +12,7 @@ from models.user import User
                  methods=['GET'], strict_slashes=False)
 def userslist():
     """list all users"""
-    elem = storage.values(User).all()
+    elem = storage.all(User).values()
     listobj = []
     for obj in elem:
         listobj.append(obj.to_dict())
