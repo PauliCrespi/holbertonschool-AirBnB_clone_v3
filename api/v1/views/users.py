@@ -43,15 +43,13 @@ def deluser(user_id):
                  methods=['POST'], strict_slashes=False)
 def postuser():
     """post user"""
-    if not request.json:
-        abort(400, description="Not a JSON")
-    if 'email' not in request.json:
-        abort(400, description="Missing email")
-    if 'password' not in request.json:
-        abort(400, description="Missing password")
-    if not state:
-        abort(404)
     req = request.get_json()
+    if not req:
+        abort(400, description="Not a JSON")
+    if 'email' not in req:
+        abort(400, description="Missing email")
+    if 'password' not in req:
+        abort(400, description="Missing password")
     info = User(**req)
     info.save()
     return make_response(jsonify(info.to_dict()), 201)
