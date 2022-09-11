@@ -43,7 +43,7 @@ def deluser(user_id):
                  methods=['POST'], strict_slashes=False)
 def postuser():
     """post user"""
-    req = request.get_json()
+    req = request.json
     if not req:
         abort(400, description="Not a JSON")
     if 'email' not in req:
@@ -58,7 +58,7 @@ def postuser():
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 def put_user(user_id):
     """put user"""
-    req = request.get_json()
+    req = request.json
     if not req:
         abort(400, description="Not a JSON")
     if not storage.get(User, user_id):
