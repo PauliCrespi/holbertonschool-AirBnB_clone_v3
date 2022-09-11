@@ -8,17 +8,18 @@ from flask import jsonify, make_response, request, abort
 from models.amenity import Amenity
 
 
-@app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 @app_views.route('/amenities/<amenity_id>',
                  methods=['GET'], strict_slashes=False)
-def listamen(amenity_id=None):
-    """list all amenities"""
-    if amenities_id is not None:
-        if not storage.get(Amenity, amenity_id):
-            abort(404)
-        elem = storage.get(Amenity, amenity_id).to_dict()
-        return jsonify(elem)
-    else:
+def listamen(amenity_id):
+    """list amenity"""
+    if not storage.get(Amenity, amenity_id):
+        abort(404)
+    elem = storage.get(Amenity, amenity_id).to_dict()
+    return jsonify(elem)
+
+
+@app_views.route('/amenities', methods=['GET'], strict_slashes=False)
+def amenshow():
         listobj = []
         for obj in storage.all(Amenity).values():
             listobj.append(obj.to_dict())
