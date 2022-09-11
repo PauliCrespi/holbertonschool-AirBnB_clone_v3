@@ -56,7 +56,7 @@ def post_place(city_id):
         abort(400, description="Missing user_id")
     if not storage.get(User, req['user_id']):
         abort(404)
-    if 'name' not in request.json:
+    if 'name' not in req:
         abort(400, description="Missing name")
     city = storage.get(City, city_id)
     if not city:
