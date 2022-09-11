@@ -8,8 +8,8 @@ from flask import jsonify, make_response, request, abort
 from models.state import State
 
 
-@app_views.route('/states', methods=['GET'])
-@app_views.route('/states/<state_id>', methods=['GET'])
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def all(state_id=None):
     """list all states"""
     if state_id is not None:
@@ -19,12 +19,12 @@ def all(state_id=None):
         return jsonify(elem)
     else:
         listobj = []
-    for obj in storage.all(State).values():
-        listobj.append(obj.to_dict())
-    return jsonify(listobj)
+        for obj in storage.all(State).values():
+            listobj.append(obj.to_dict())
+        return jsonify(listobj)
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'])
+@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def dell(state_id):
     """delete"""
     if not storage.get(State, state_id):
@@ -34,7 +34,7 @@ def dell(state_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/states', methods=['POST'])
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 def posting():
     """post"""
     req = request.json
@@ -47,7 +47,7 @@ def posting():
     return make_response(jsonify(info.to_dict()), 201)
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'])
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def putting(state_id):
     """put"""
     req = request.json
