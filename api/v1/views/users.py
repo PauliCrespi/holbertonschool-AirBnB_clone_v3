@@ -56,7 +56,7 @@ def postuser():
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
-def put_user(city_id):
+def put_user(user_id):
     """put user"""
     req = request.get_json()
     if not req:
