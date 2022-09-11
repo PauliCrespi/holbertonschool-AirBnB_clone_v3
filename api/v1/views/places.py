@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """place"""
 
 from api.v1.views import app_views
@@ -7,6 +8,7 @@ from models import storage
 from flask import jsonify, make_response, request, abort
 from models.city import City
 from models.state import State
+from models.user import User
 from models.place import Place
 
 
@@ -50,6 +52,9 @@ def place_del(place_id):
 def post_place(city_id):
     """post"""
     req = request.get_json()
+    city = storage.get(City, city_id)
+    if not city:
+        abort(404)
     if not req:
         abort(400, description="Not a JSON")
     if 'user_id' not in req:
@@ -58,10 +63,6 @@ def post_place(city_id):
         abort(404)
     if 'name' not in req:
         abort(400, description="Missing name")
-    city = storage.get(City, city_id)
-    if not city:
-        abort(404)
-    req["city_id"] = city_id
     info = Place(**req)
     info.save()
     return make_response(jsonify(info.to_dict()), 201)
