@@ -54,7 +54,7 @@ def postamen():
                  methods=['PUT'], strict_slashes=False)
 def putamen(amenity_id):
     """put"""
-    req = request.get_json
+    req = request.get_json()
     if not req:
         abort(400, description="Not a JSON")
     if not storage.get(Amenity, amenity_id):
