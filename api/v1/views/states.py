@@ -27,9 +27,10 @@ def all(state_id=None):
 @app_views.route('states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def dell(state_id):
     """delete"""
-    if not storage.get(State, state_id):
+    elem = storage.get(State, state_id)
+    if not elem:
         abort(404)
-    storage.delete(storage.get(State, state_id))
+    storage.delete(elem)
     storage.save()
     return make_response(jsonify({}), 200)
 
@@ -55,11 +56,9 @@ def putting(state_id):
         abort(400, description="Not a JSON")
     if not storage.get(State, state_id):
         abort(404)
-    if 'name' not in req:
-        abort(400, description="Missing name")
-    keys = ['id', 'created_at', 'updated_at']
-    for key, value in req.Items():
-        if key not in keys:
+    badkeys = ['id', 'created_at', 'updated_at']
+    for key, value in req.items():
+        if key not in badkeys:
             elem = storage.get(State, state_id)
             setattr(elem, key, value)
     storage.save()
